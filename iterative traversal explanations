@@ -170,3 +170,64 @@ class Solution {
         return inorder;
     }
 }
+
+Level order traversal:- 
+
+Given binary tree [3,9,20,null,null,15,7]
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+
+answer:- [
+  [3],
+  [9,20],
+  [15,7]
+]
+
+Explanation:-
+
+code:-
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        Queue<TreeNode> levelNode=new LinkedList<TreeNode>();
+        List<List<Integer>> nodes=new ArrayList<>();
+        if(root==null)
+            return nodes;
+        levelNode.add(root);
+        while(!levelNode.isEmpty())
+        {
+            int size=levelNode.size();
+            List<Integer> currentLevel=new ArrayList<>();
+            for(int i=0;i<size;i++)
+            {
+               TreeNode temp=levelNode.remove();
+                currentLevel.add(temp.val);
+                if(temp.left!=null)
+                    levelNode.add(temp.left);
+                if(temp.right!=null)
+                    levelNode.add(temp.right);
+            }
+           nodes.add(currentLevel); 
+        }
+        return nodes;
+    }
+}
