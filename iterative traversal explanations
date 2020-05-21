@@ -288,20 +288,163 @@ What is a threaded binary tree?
 
 A binary tree can be threaded by making the right child that would poin to null ordinarily point to the inorder successor and the left child that would
 normally point to nul point to the inorder predecessor of the node.
+The inorder predecessor is the rightmost node of the left subtree while the inorder successor.
 
-Morris Inorder traversal:-
+Morris Inorder traversal:- 
 
-Explanation:-
+Explanation:- The idea is to travel as left as possible but to also find a way to come back to the root node (since inorder is LEFT ROOT RIGHT), so whenever
+we encounter a node whose left subtree is absent we can do a ROOT RIGHT there i.e., print the root node and traverse the right subtree but if the left 
+subtree is present, then we search for an inorder predecessor of the node and link its right pointer to the node in order to come back to the node after having
+visited its left subtree then go on visiting the left subtrees and the follow the predecessor's right pointer(of the inorder predecessor) back to the root(node)
+of the left subtree on hitting the leftmost traversed node of the subtree, once we come back to the root of the subtree, we can safely delink it from
+its predecessor and move on to its right subtree following a similar procedure.
 
 Algorithm:-
 
+current =root;
+while current is not null i.e, nodes are left to be traversed
+	if current.left child is null
+		visit(current)
+		current=current.right
+	else
+	    predecessor=findpredecessor of current
+		if predecessor.right is null i.e,not yet linked
+			link predecessor.right to current
+			current=current.left
+		else   // i.e,the left subtree of current has been visited now got back to root
+		    delink predecessor from current
+			visit(current)
+			current=current.right
+
+
 Code:-
 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> inorder=new ArrayList<>();
+        TreeNode current=root;
+        while(current!=null)
+        {
+            if(current.left==null){
+                inorder.add(current.val);
+                current=current.right;
+            }
+                            
+            else{
+                TreeNode predecessor=current.left;
+                while(predecessor.right!=null && predecessor.right!=current)
+                   predecessor=predecessor.right;
+                if(predecessor.right==null)
+                {
+                    predecessor.right=current;
+                    current=current.left;
+                }
+                else
+                {
+                    predecessor.right=null;
+                    inorder.add(current.val);
+                    current=current.right;
+                }
+            }
+        }
+        
+        return inorder;
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Morris Preorder traversal:-
 
-Explanation:-
+Explanation:- The idea is to traverse the present node while keeping track of its inorder predecessor so that once the left subtree is done visiting
+we can move on to the right subtree without bothering about the root since we already visit it before we link its predecessor to itself. Trivial case
+is when the left subtree is absent we can just visit the current node and move on to its right subtree, otherwise we find its inorder predecessor(rightmost
+node in the left subtree) since preorder is (root left right) i.e, right still comes after visiting left is done. We find the inorder predecessor and
+link it to the root of the subtree, once we hit the predecessor, it either points back to the root of the subtree or is null, if its null it means
+the left part is still not completely visited and we just link it and visit the left subtree further otherwise we move on to the right of the predecessor's
+right i.e, right of the root and continue the same procedure for it.
 
 Algorithm:-
 
+current=root;
+while current is not null i.e, nodes are left to be traversed
+	if current.left child is null
+		visit(current)
+		current=current.right
+	else
+	    predecessor=findpredecessor of current
+		if predecessor.right is null i.e,not yet linked
+			link predecessor.right to current
+			visit(current) //since it visits node first then goes to its left and right subtrees respectively
+			current=current.left
+		else   // i.e,the current and the left subtree of current has been visited now got back to visit root's right part
+		    delink predecessor from current
+			current=current.right
+
 Code:-
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> preorder=new ArrayList<>();
+        TreeNode current=root;
+        while(current!=null)
+        {
+            if(current.left==null){
+                preorder.add(current.val);
+                current=current.right;
+            }
+                            
+            else{
+                TreeNode predecessor=current.left;
+                while(predecessor.right!=null && predecessor.right!=current)
+                   predecessor=predecessor.right;
+                if(predecessor.right==null)
+                {
+                    predecessor.right=current;
+					preorder.add(current.val);
+                    current=current.left;
+                }
+                else
+                {
+                    predecessor.right=null;
+                    current=current.right;
+                }
+            }
+        }
+        
+        return preorder;
+    }
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
