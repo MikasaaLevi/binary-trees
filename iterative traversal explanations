@@ -279,3 +279,29 @@ class Solution {
 }
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Morris traversal:
+
+This is used for traversal of trees without any extra space (i.e without stack or recursion).
+
+What is a threaded binary tree?
+
+A binary tree can be threaded by making the right child that would poin to null ordinarily point to the inorder successor and the left child that would
+normally point to nul point to the inorder predecessor of the node.
+
+Morris Inorder traversal:-
+
+Explanation:-
+
+Algorithm:-
+
+Code:-
+
+
+Morris Preorder traversal:-
+
+Explanation:-
+
+Algorithm:-
+
+Code:-
